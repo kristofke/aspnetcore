@@ -158,6 +158,60 @@ public class TestingInfrastructureTests : IClassFixture<WebApplicationFactory<Ba
     }
 
     [Fact]
+    public async Task TestingInfrastructure_PostRedirectHandlerUsesOriginalRequestContent()
+    {
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Post, "Testing/RedirectHandler/PostContent/2")
+        {
+            Content = new ObjectContent<Number>(new Number { Value = 5 }, new JsonMediaTypeFormatter())
+        };
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var handlerResponse = await response.Content.ReadAsAsync<RedirectHandlerResponse>();
+        Assert.Equal(2, handlerResponse.Url);
+        Assert.Equal(5, handlerResponse.Body);
+    }
+
+    [Fact]
+    public async Task TestingInfrastructure_PutRedirectHandlerUsesOriginalRequestContent()
+    {
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Put, "Testing/RedirectHandler/PutContent/2")
+        {
+            Content = new ObjectContent<Number>(new Number { Value = 5 }, new JsonMediaTypeFormatter())
+        };
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var handlerResponse = await response.Content.ReadAsAsync<RedirectHandlerResponse>();
+        Assert.Equal(2, handlerResponse.Url);
+        Assert.Equal(5, handlerResponse.Body);
+    }
+
+    [Fact]
+    public async Task TestingInfrastructure_PatchRedirectHandlerUsesOriginalRequestContent()
+    {
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Patch, "Testing/RedirectHandler/PatchContent/2")
+        {
+            Content = new ObjectContent<Number>(new Number { Value = 5 }, new JsonMediaTypeFormatter())
+        };
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var handlerResponse = await response.Content.ReadAsAsync<RedirectHandlerResponse>();
+        Assert.Equal(2, handlerResponse.Url);
+        Assert.Equal(5, handlerResponse.Body);
+    }
+
+    [Fact]
     public async Task TestingInfrastructure_WorksWithGenericHost()
     {
         using var factory = new WebApplicationFactory<GenericHostWebSite.Program>()

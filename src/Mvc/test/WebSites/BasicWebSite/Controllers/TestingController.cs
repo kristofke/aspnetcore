@@ -144,6 +144,42 @@ public class TestingController : Controller
             return Ok(value);
         }
     }
+
+    [HttpPost("Testing/RedirectHandler/PostContent/{value}")]
+    public IActionResult RedirectHandlerPostContent([FromRoute] int value, [FromBody] Number number)
+    {
+        return RedirectToActionPreserveMethod(nameof(RedirectHandlerPostContentPost));
+    }
+
+    [HttpPost("Testing/RedirectHandler/PostContent/{value}/Post")]
+    public IActionResult RedirectHandlerPostContentPost([FromRoute] int value, [FromBody] Number number)
+    {
+        return Ok(new RedirectHandlerResponse { Url = value, Body = number.Value });
+    }
+
+    [HttpPut("Testing/RedirectHandler/PutContent/{value}")]
+    public IActionResult RedirectHandlerPutContent([FromRoute] int value, [FromBody] Number number)
+    {
+        return RedirectToActionPreserveMethod(nameof(RedirectHandlerPutContentPut));
+    }
+
+    [HttpPut("Testing/RedirectHandler/PutContent/{value}/Put")]
+    public IActionResult RedirectHandlerPutContentPut([FromRoute] int value, [FromBody] Number number)
+    {
+        return Ok(new RedirectHandlerResponse { Url = value, Body = number.Value });
+    }
+
+    [HttpPatch("Testing/RedirectHandler/PatchContent/{value}")]
+    public IActionResult RedirectHandlerPatchContent([FromRoute] int value, [FromBody] Number number)
+    {
+        return RedirectToActionPreserveMethod(nameof(RedirectHandlerPatchContentPatch));
+    }
+
+    [HttpPatch("Testing/RedirectHandler/PatchContent/{value}/Patch")]
+    public IActionResult RedirectHandlerPatchContentPatch([FromRoute] int value, [FromBody] Number number)
+    {
+        return Ok(new RedirectHandlerResponse { Url = value, Body = number.Value });
+    }
 }
 
 public class PostRedirectGetGetResponse
